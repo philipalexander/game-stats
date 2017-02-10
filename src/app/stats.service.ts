@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { Player } from './player';
+import { Game } from './game';
 
 
 @Injectable()
@@ -10,10 +10,10 @@ export class StatsService {
   private statsUrl = 'https://sheetsu.com/apis/v1.0/b833d5abc21f';  // URL to web api
   constructor(private http: Http) { }
 
-  getPlayers(): Promise<Player[]> {
+  getGames(): Promise<Game[]> {
     return this.http.get(this.statsUrl)
             .toPromise()
-            .then(response => response.json() as Player[])
+            .then(response => response.json() as Game[])
             .catch(this.handleError);
   }
 
@@ -22,37 +22,29 @@ export class StatsService {
     return Promise.reject(error.message || error);
   }
 
-  // .then(function(response){
-  //   console.log("response", response);
-  // })
+  // getGame(id: number): Promise<Game> {
+  //   return this.getGames()
+  //             .then(players => players.find(player => player.id === id));
+  // }
+  // update(player: Player): Promise<Player> {
+  //   const url = `${this.statsUrl}/${player.id}`;
+  //   return this.http
+  //     .put(url, JSON.stringify(player), {headers: this.headers})
+  //     .toPromise()
+  //     .then(() => player)
+  //     .catch(this.handleError);
+  // }
 
-  //response => response.json().data as Player[]
-  // getHero(id: number): Promise<Hero> {
-  //   return this.getHeroes()
-  //             .then(heroes => heroes.find(hero => hero.id === id));
-  // }
-  //
-  // private headers = new Headers({'Content-Type': 'application/json'});
-  //
-  // update(hero: Hero): Promise<Hero> {
-  //   const url = `${this.heroesUrl}/${hero.id}`;
-  //   return this.http
-  //     .put(url, JSON.stringify(hero), {headers: this.headers})
-  //     .toPromise()
-  //     .then(() => hero)
-  //     .catch(this.handleError);
-  // }
-  //
-  // create(name: string): Promise<Hero> {
-  //   return this.http
-  //     .post(this.heroesUrl, JSON.stringify({name: name}), {headers: this.headers})
-  //     .toPromise()
-  //     .then(res => res.json().data)
-  //     .catch(this.handleError);
-  // }
+  create(name: string): Promise<Game> {
+    return this.http
+      .post(this.statsUrl, JSON.stringify({name: name}), {headers: this.headers})
+      .toPromise()
+      .then(res => res.json().data)
+      .catch(this.handleError);
+  }
   //
   // delete(id: number): Promise<void> {
-  //   const url = `${this.heroesUrl}/${id}`;
+  //   const url = `${this.statsUrl}/${id}`;
   //   return this.http.delete(url, {headers: this.headers})
   //     .toPromise()
   //     .then(() => null)

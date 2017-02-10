@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Player } from './player';
+import { Game } from './game';
 import { StatsService } from './stats.service';
 
 @Component({
@@ -7,28 +7,47 @@ import { StatsService } from './stats.service';
   selector: 'my-dashboard',
   // templateUrl: 'app.component.html',
   template: `
-  <h3>My Dashboard</h3>
+  <h3>Games</h3>
   <div class="grid grid-pad">
-    <a *ngFor="let player of players" class="col-1-4">
-      <div class="module player">
-        <h4>{{player.name}}</h4>
-        {{player.points}}
-      </div>
-    </a>
+    <table>
+    	<thead>
+    		<tr>
+    			<th>Game ID</th>
+    			<th>Game Type</th>
+    			<th>Player(s)</th>
+    			<th>Winner</th>
+          <th>Loser</th>
+          <th>Winner Score</th>
+          <th>Loser Score</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+    		<tr *ngFor="let game of games">
+    			<td>{{game.id}}</td>
+    			<td>{{game.game}}</td>
+    			<td>{{game.players}}</td>
+    			<td>{{game.winner}}</td>
+        	<td>{{game.loser}}</td>
+          <td>{{game.winnerScore}}</td>
+        	<td>{{game.loserScore}}</td>
+    		</tr>
+    	</tbody>
+    </table>
+
   </div>
    `,
   styleUrls: ['app.component.css']
 })
 
 export class DashboardComponent implements OnInit {
-  players: Player[] = [];
+  games: Game[] = [];
   constructor(private statsService: StatsService) { }
 
-  getPlayers(): void {
-    this.statsService.getPlayers().then(players => this.players = players);
+  getGames(): void {
+    this.statsService.getGames().then(games => this.games = games);
   }
 
   ngOnInit(): void {
-    this.getPlayers();
+    this.getGames();
   }
 }
