@@ -6,36 +6,7 @@ import { StatsService } from './stats.service';
   // moduleId: module.id,
   selector: 'my-dashboard',
   // templateUrl: 'app.component.html',
-  template: `
-  <h3>Games</h3>
-  <div class="grid grid-pad">
-    <table>
-    	<thead>
-    		<tr>
-    			<th>Game ID</th>
-    			<th>Game Type</th>
-    			<th>Player(s)</th>
-    			<th>Winner</th>
-          <th>Loser</th>
-          <th>Winner Score</th>
-          <th>Loser Score</th>
-    		</tr>
-    	</thead>
-    	<tbody>
-    		<tr *ngFor="let game of games">
-    			<td>{{game.id}}</td>
-    			<td>{{game.game}}</td>
-    			<td>{{game.players}}</td>
-    			<td>{{game.winner}}</td>
-        	<td>{{game.loser}}</td>
-          <td>{{game.winnerScore}}</td>
-        	<td>{{game.loserScore}}</td>
-    		</tr>
-    	</tbody>
-    </table>
-
-  </div>
-   `,
+  templateUrl: './dashboard.component.html',
   styleUrls: ['app.component.css']
 })
 
@@ -45,6 +16,28 @@ export class DashboardComponent implements OnInit {
 
   getGames(): void {
     this.statsService.getGames().then(games => this.games = games);
+  }
+
+  testme(): void {
+    var game = {
+      'id': 10,
+      'game': 'foos',
+      'players': 'Bob, Bill',
+      'winner': 'Bob',
+      'winnerScore': 5,
+      'loserScore': 4
+    };
+    this.add(game);
+  }
+
+  add(newGame): void {
+    console.log("add me", newGame);
+    if (!newGame) { return; }
+    this.statsService.create(newGame)
+      .then(game => {
+        this.games.push(game);
+        // this.selectedHero = null;
+      });
   }
 
   ngOnInit(): void {

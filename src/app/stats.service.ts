@@ -35,9 +35,10 @@ export class StatsService {
   //     .catch(this.handleError);
   // }
 
-  create(name: string): Promise<Game> {
+  create(game): Promise<Game> {
+    console.log("create game ", game);
     return this.http
-      .post(this.statsUrl, JSON.stringify({name: name}), {headers: this.headers})
+      .post(this.statsUrl, JSON.stringify(game), {headers: this.headers})
       .toPromise()
       .then(res => res.json().data)
       .catch(this.handleError);
